@@ -1,1 +1,1 @@
-AS I like JS a lot, I am playing around with Node.js :)
+This is just a repo to store code used to learn Node.js :)
