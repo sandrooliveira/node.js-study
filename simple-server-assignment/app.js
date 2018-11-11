@@ -1,4 +1,5 @@
 const http = require('http');
+const users = [];
 
 const showHome = res => {
   res.setHeader('Content-Type', 'text/html');
@@ -13,16 +14,35 @@ const listUsers = res => {
   res.setHeader('Content-Type', 'text/html');
   res.write('<html>');
   res.write('<head><title>Users</title></head>');
-  res.write('<body><ul><li>User 1</li><li>User 2</li></ul></body>');
+  res.write('<body>');
+  res.write('<ul>')
+
+  users.forEach(user => {
+    res.write(`<li>${user}</li>`)
+  });
+
+  res.write('</ul');
+  res.write('</body');
   res.write('</html>');
   res.end();
 };
 
 const createUser = (req, res) => {
-  //Creation of the user is comming :)
-  res.statusCode = 302;
-  res.setHeader('Location', '/users');
-  res.end();
+  const newUser = [];
+
+  const getData = chunk => newUser.push(chunk);
+  req.on('data', getData)
+
+  const onDataReady = () => {
+    const parsedUser = Buffer.concat(newUser).toString();
+    users.push(parsedUser.split('=')[1]);
+
+    res.statusCode = 302;
+    res.setHeader('Location', '/users');
+    res.end();
+  }
+
+  req.on('end', onDataReady);
 }
 
 const handleServerRequest = (req, res) => {
