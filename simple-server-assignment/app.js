@@ -41,7 +41,6 @@ const createUser = (req, res) => {
     res.setHeader('Location', '/users');
     res.end();
   }
-
   req.on('end', onDataReady);
 }
 
