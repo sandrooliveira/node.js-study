@@ -1,0 +1,20 @@
+const io = require('../socket');
+
+exports.getPosts = (req, res, next) => {
+  res.status(200).json({
+    posts: [{ title: 'First Post', content: 'This is the first post!' }]
+  });
+};
+
+exports.createPost = (req, res, next) => {
+  const title = req.body.title;
+  const content = req.body.content;
+
+  io.getIo().emit('chique', {name: 'Chique 10'});
+
+  // create post in db
+  res.status(201).json({
+    message: 'Post Created successfully',
+    post: {id: new Date().toISOString(), title, content}
+  })
+}
